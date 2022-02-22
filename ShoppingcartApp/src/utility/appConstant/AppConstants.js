@@ -8,4 +8,5 @@ export const ADDED_PLACEHOLDER = 'Added';
 export const REMOVE_PLACEHOLDER = 'Remove';
 export const RUPEE_PLACEHOLDER = 'Rs';
 export const WISHLIST_SCREEN_NAME = 'Wishlist';
+export const ADDRESS_SCREEN_NAME = 'Address';
 

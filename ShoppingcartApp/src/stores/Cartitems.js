@@ -1,6 +1,86 @@
 import {makeAutoObservable} from 'mobx';
 
 class Cartitems {
+  addressItemsDummy = [
+    {
+      id: 1,
+      is_selected: false,
+      is_dropdown: false,
+      placeholder_name: 'Full Name',
+      is_address: false,
+      states_name: [],
+    },
+    {
+      id: 2,
+      is_selected: false,
+      is_dropdown: false,
+      placeholder_name: '10 - Digit mobile number',
+      is_address: false,
+      states_name: [],
+    },
+    {
+      id: 3,
+      is_selected: false,
+      is_dropdown: false,
+      placeholder_name: 'Pincode',
+      is_address: false,
+      states_name: [],
+    },
+    {
+      id: 4,
+      is_selected: false,
+      is_dropdown: false,
+      placeholder_name: 'Locality',
+      is_address: false,
+      states_name: [],
+    },
+    {
+      id: 5,
+      is_selected: false,
+      is_dropdown: false,
+      placeholder_name: 'Address (Area and Street)',
+      is_address: true,
+      states_name: [],
+    },
+    {
+      id: 6,
+      is_selected: false,
+      is_dropdown: false,
+      placeholder_name: 'City/District/Town',
+      is_address: false,
+      states_name: [],
+    },
+    {
+      id: 7,
+      is_selected: false,
+      is_dropdown: true,
+      placeholder_name: 'Select state',
+      is_address: false,
+      states_name: [
+        'Uttar Pradesh',
+        'Uttrakhand',
+        'Himachal Pradesh',
+        'Karnataka',
+      ],
+    },
+    {
+      id: 8,
+      is_selected: false,
+      is_dropdown: false,
+      placeholder_name: 'Landmark',
+      is_address: false,
+      states_name: [],
+    },
+    {
+      id: 9,
+      is_selected: false,
+      is_dropdown: false,
+      placeholder_name: 'Alternate Phone(Optional)',
+      is_address: false,
+      states_name: [],
+    },
+  ];
+
   cartItemsDummy = [
     [
       {
@@ -226,14 +306,42 @@ class Cartitems {
       },
     ],
   ];
+
   cartItems = [];
   listDataSource = [];
   cartCount = 0;
   wishlistCount = 0;
+  homeButtonSelected = false;
+  workButtonSelected = false;
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  updateHomeWorkButtonSelected = (is_home_selected, is_work_selected) => {
+    this.homeButtonSelected = is_home_selected;
+    this.workButtonSelected = is_work_selected;
+  };
+
+  updateIsSelectedForAddressItems = (id, is_selected) => {
+    data = this.addressItemsDummy.map(item => {
+      return item.id == id
+        ? {
+            id,
+            is_selected,
+            is_dropdown: item.is_dropdown,
+            placeholder_name: item.placeholder_name,
+            is_address: item.is_address,
+            states_name: item.states_name,
+          }
+        : item;
+    });
+    this.setAddressItems(data);
+  };
+
+  setAddressItems = data => {
+    this.addressItemsDummy = data;
+  };
 
   increementCartCount = () => {
     this.cartCount += 1;
