@@ -1,6 +1,16 @@
 import {makeAutoObservable} from 'mobx';
 
 class Cartitems {
+  name = '';
+  mobile = '';
+  pincode = '';
+  locality = '';
+  addressArea = '';
+  addressCity = '';
+  addressState = '';
+  addressLandmark = '';
+  alternatePhone = '';
+  addressType = '';
   addressItemsDummy = [
     {
       id: 1,
@@ -8,6 +18,9 @@ class Cartitems {
       is_dropdown: false,
       placeholder_name: 'Full Name',
       is_address: false,
+      value: '',
+      field_type: 'text',
+      field_name: 'name',
       states_name: [],
     },
     {
@@ -16,6 +29,9 @@ class Cartitems {
       is_dropdown: false,
       placeholder_name: '10 - Digit mobile number',
       is_address: false,
+      value: '',
+      field_type: 'mobile',
+      field_name: 'mobile',
       states_name: [],
     },
     {
@@ -24,6 +40,9 @@ class Cartitems {
       is_dropdown: false,
       placeholder_name: 'Pincode',
       is_address: false,
+      value: '',
+      field_type: 'integer',
+      field_name: 'pincode',
       states_name: [],
     },
     {
@@ -32,6 +51,9 @@ class Cartitems {
       is_dropdown: false,
       placeholder_name: 'Locality',
       is_address: false,
+      value: '',
+      field_type: 'text',
+      field_name: 'locality',
       states_name: [],
     },
     {
@@ -40,6 +62,9 @@ class Cartitems {
       is_dropdown: false,
       placeholder_name: 'Address (Area and Street)',
       is_address: true,
+      value: '',
+      field_type: 'text',
+      field_name: 'addressArea',
       states_name: [],
     },
     {
@@ -48,6 +73,9 @@ class Cartitems {
       is_dropdown: false,
       placeholder_name: 'City/District/Town',
       is_address: false,
+      value: '',
+      field_type: 'text',
+      field_name: 'addressCity',
       states_name: [],
     },
     {
@@ -56,6 +84,9 @@ class Cartitems {
       is_dropdown: true,
       placeholder_name: 'Select state',
       is_address: false,
+      value: '',
+      field_type: 'select',
+      field_name: 'addressState',
       states_name: [
         'Uttar Pradesh',
         'Uttrakhand',
@@ -69,6 +100,9 @@ class Cartitems {
       is_dropdown: false,
       placeholder_name: 'Landmark',
       is_address: false,
+      value: '',
+      field_type: 'text',
+      field_name: 'addressLandmark',
       states_name: [],
     },
     {
@@ -77,6 +111,9 @@ class Cartitems {
       is_dropdown: false,
       placeholder_name: 'Alternate Phone(Optional)',
       is_address: false,
+      value: '',
+      field_type: 'mobile',
+      field_name: 'alternatePhone',
       states_name: [],
     },
   ];
@@ -318,6 +355,52 @@ class Cartitems {
     makeAutoObservable(this);
   }
 
+  updateFieldStateValue = (field_name, value) => {
+    switch (field_name) {
+      default:
+        return null;
+      case 'name':
+        this.name = value;
+      case 'mobile':
+        this.mobile = value;
+      case 'pincode':
+        this.pincode = value;
+      case 'locality':
+        this.locality = value;
+      case 'addressArea':
+        this.addressArea = value;
+      case 'addressCity':
+        this.addressCity = value;
+      case 'addressState':
+        this.addressState = value;
+      case 'addressLandmark':
+        this.addressLandmark = value;
+      case 'alternatePhone':
+        this.alternatePhone = value;
+      case 'addressType':
+        this.addressType = value;
+    }
+  };
+
+  updateValueOfTextInput = (id, value) => {
+    data = this.addressItemsDummy.map(item => {
+      return item.id == id
+        ? {
+            id,
+            is_selected: item.is_selected,
+            is_dropdown: item.is_dropdown,
+            placeholder_name: item.placeholder_name,
+            is_address: item.is_address,
+            value,
+            field_type: item.field_type,
+            field_name: item.field_name,
+            states_name: item.states_name,
+          }
+        : item;
+    });
+    this.setAddressItems(data);
+  };
+
   updateHomeWorkButtonSelected = (is_home_selected, is_work_selected) => {
     this.homeButtonSelected = is_home_selected;
     this.workButtonSelected = is_work_selected;
@@ -332,6 +415,9 @@ class Cartitems {
             is_dropdown: item.is_dropdown,
             placeholder_name: item.placeholder_name,
             is_address: item.is_address,
+            value: item.value,
+            field_type: item.field_type,
+            field_name: item.field_name,
             states_name: item.states_name,
           }
         : item;

@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  ScrollView,
+  ToastAndroid,
   FlatList,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -20,7 +20,6 @@ import {
 import {ADDRESS_SCREEN_NAME} from '../../utility/appConstant/AppConstants';
 import {COLORS} from '../../utility/appConstant/Styles';
 import SelectDropdown from 'react-native-select-dropdown';
-import {AddressTextInputComponent} from '../../components/Cart/AddressTextInputComponent';
 
 @inject('cartitems')
 @observer
@@ -44,7 +43,32 @@ class AddressScreen extends Component {
       homeButtonSelected,
       workButtonSelected,
       updateHomeWorkButtonSelected,
+      updateValueOfTextInput,
+      updateFieldStateValue,
+      name,
+      mobile,
+      pincode,
+      locality,
+      addressArea,
+      addressCity,
+      addressState,
+      addressLandmark,
+      alternatePhone,
+      addressType,
     } = this.props.cartitems;
+
+    const keyboardType = fieldType => {
+      switch (fieldType) {
+        default:
+          return 'default';
+        case 'text':
+          return 'default';
+        case 'mobile':
+          return 'numeric';
+        case 'integer':
+          return 'numeric';
+      }
+    };
 
     const listItems = ({item}) => {
       return (
@@ -52,6 +76,7 @@ class AddressScreen extends Component {
           {!item.is_dropdown ? (
             <View>
               <TextInput
+                value={item.value}
                 autoCapitalize="none"
                 autoCorrect={false}
                 style={
@@ -63,9 +88,14 @@ class AddressScreen extends Component {
                     ? styles.input
                     : styles.inputNotSelected
                 }
-                multipart={item.is_address ? true : false}
+                onChangeText={text => {
+                  updateFieldStateValue(item.field_name, text);
+                  updateValueOfTextInput(item.id, text);
+                }}
+                multiline={item.is_address ? true : false}
                 placeholder={item.is_selected ? '' : item.placeholder_name}
-                onChangeText={() => {}}
+                keyboardType={keyboardType(item.field_type)}
+                maxLength={item.mobile ? 10 : 100}
                 onFocus={() => {
                   updateIsSelectedForAddressItems(item.id, true);
                 }}
@@ -80,25 +110,31 @@ class AddressScreen extends Component {
               ) : null}
             </View>
           ) : (
-            <View style={{flex: 1}}>
+            <View
+              style={{
+                marginTop: 9,
+                width: '100%',
+              }}>
               <SelectDropdown
                 buttonStyle={{
-                  fontSize: 18,
                   borderWidth: 1,
                   borderColor: '#d6cccb',
                   borderRadius: 5,
-                  marginTop: 9,
                   backgroundColor: '#fff',
-                  flex: 1,
+                  width: '100%',
                 }}
-                buttonTextStyle={{color: '#000', fontSize: 18}}
-                dropdownStyle={{flex: 1}}
+                buttonTextStyle={{
+                  color: '#000',
+                  fontSize: 17,
+                }}
+                dropdownStyle={{}}
                 rowStyle={{}}
                 rowTextStyle={{}}
                 data={states}
                 onSelect={(selectedItem, index) => {}}
                 defaultButtonText="Select state"
                 buttonTextAfterSelection={(selectedItem, index) => {
+                  updateFieldStateValue(item.field_name, selectedItem);
                   // text represented after item is selected
                   // if data array is an array of objects then return selectedItem.property to render after item is selected
                   return selectedItem;
@@ -113,6 +149,30 @@ class AddressScreen extends Component {
           )}
         </View>
       );
+    };
+
+    const _validationHandler = () => {
+      /*
+      name,
+      mobile,
+      pincode,
+      locality,
+      addressArea,
+      addressCity,
+      addressState,
+      addressLandmark,
+      alternatePhone,
+      addressType,
+      */
+      if (!(name.length > 0)) {
+        ToastAndroid.showWithGravityAndOffset(
+          'The name field is required.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+      }
     };
 
     const formHeader = () => {
@@ -134,6 +194,7 @@ class AddressScreen extends Component {
             <TouchableOpacity
               onPress={() => {
                 updateHomeWorkButtonSelected(true, false);
+                updateFieldStateValue('addressType', 'Home');
               }}
               style={
                 homeButtonSelected
@@ -149,6 +210,7 @@ class AddressScreen extends Component {
             <TouchableOpacity
               onPress={() => {
                 updateHomeWorkButtonSelected(false, true);
+                updateFieldStateValue('addressType', 'Work');
               }}
               style={
                 workButtonSelected
@@ -163,16 +225,21 @@ class AddressScreen extends Component {
             </TouchableOpacity>
           </View>
           <View>
-            <TouchableOpacity style={styles.formActionButtonsSave}>
+            <TouchableOpacity
+              onPress={() => _validationHandler()}
+              style={styles.formActionButtonsSave}>
               <Text style={styles.formActionButtonsText}>Save</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.formActionButtonsCancel}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.goBack()}
+              style={styles.formActionButtonsCancel}>
               <Text style={styles.formActionButtonsText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
       );
     };
+
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.header}>
@@ -351,8 +418,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   addressIcons: {
-    height: 10,
-    width: 10,
+    height: 15,
+    width: 15,
+    marginRight: 5,
   },
   adressButtons: {
     flexDirection: 'row',
