@@ -131,10 +131,11 @@ class AddressScreen extends Component {
                 rowStyle={{}}
                 rowTextStyle={{}}
                 data={states}
-                onSelect={(selectedItem, index) => {}}
+                onSelect={(selectedItem, index) => {
+                  updateFieldStateValue(item.field_name, selectedItem);
+                }}
                 defaultButtonText="Select state"
                 buttonTextAfterSelection={(selectedItem, index) => {
-                  updateFieldStateValue(item.field_name, selectedItem);
                   // text represented after item is selected
                   // if data array is an array of objects then return selectedItem.property to render after item is selected
                   return selectedItem;
@@ -152,18 +153,7 @@ class AddressScreen extends Component {
     };
 
     const _validationHandler = () => {
-      /*
-      name,
-      mobile,
-      pincode,
-      locality,
-      addressArea,
-      addressCity,
-      addressState,
-      addressLandmark,
-      alternatePhone,
-      addressType,
-      */
+      console.log(addressArea);
       if (!(name.length > 0)) {
         ToastAndroid.showWithGravityAndOffset(
           'The name field is required.',
@@ -172,6 +162,81 @@ class AddressScreen extends Component {
           50,
           2500,
         ); //SHORT=>2 seconds, LONG=>3.5 seconds
+      } else if (!(mobile.length > 0 && mobile.length == 10)) {
+        ToastAndroid.showWithGravityAndOffset(
+          'Enter 10-digit mobile number.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        );
+      } else if (!(pincode.length > 0 && pincode.length == 6)) {
+        ToastAndroid.showWithGravityAndOffset(
+          'Enter valid pincode.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        );
+      } else if (!(locality.length > 0)) {
+        ToastAndroid.showWithGravityAndOffset(
+          'The locality field is required.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+      } else if (!(addressArea.length > 0)) {
+        ToastAndroid.showWithGravityAndOffset(
+          'The Address(Area and Street) field is required.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+      } else if (!(addressCity.length > 0)) {
+        ToastAndroid.showWithGravityAndOffset(
+          'The City/District/Town field is required.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+      } else if (!(addressState != 'Select state')) {
+        ToastAndroid.showWithGravityAndOffset(
+          'Please select a state.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+      } else if (!(addressLandmark.length > 0)) {
+        ToastAndroid.showWithGravityAndOffset(
+          'The Landmark field is required.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+      } else if (!(addressType.length > 0)) {
+        ToastAndroid.showWithGravityAndOffset(
+          'Please select Address Type.',
+          ToastAndroid.LONG,
+          ToastAndroid.TOP,
+          50,
+          2500,
+        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+      }
+      if (alternatePhone.length > 0) {
+        if (!alternatePhone.length == 10) {
+          ToastAndroid.showWithGravityAndOffset(
+            'Enter 10-digit Alternate Phone number.',
+            ToastAndroid.LONG,
+            ToastAndroid.TOP,
+            50,
+            2500,
+          );
+        }
       }
     };
 
