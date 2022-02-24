@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Animated,
 } from 'react-native';
 import Toast from 'react-native-easy-toast';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -119,17 +120,8 @@ class AddressScreen extends Component {
                 width: '100%',
               }}>
               <SelectDropdown
-                buttonStyle={{
-                  borderWidth: 1,
-                  borderColor: '#d6cccb',
-                  borderRadius: 5,
-                  backgroundColor: '#fff',
-                  width: '100%',
-                }}
-                buttonTextStyle={{
-                  color: '#000',
-                  fontSize: 17,
-                }}
+                buttonStyle={styles.dropDownButtonStyle}
+                buttonTextStyle={styles.dropDownButtonTextStyle}
                 dropdownStyle={{}}
                 rowStyle={{}}
                 rowTextStyle={{}}
@@ -481,6 +473,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  dropDownButtonStyle: {
+    borderWidth: 1,
+    borderColor: '#d6cccb',
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    width: '100%',
+  },
+  dropDownButtonTextStyle: {
+    color: '#000',
+    fontSize: 17,
   },
 });
 
