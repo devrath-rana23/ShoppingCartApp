@@ -359,26 +359,46 @@ class Cartitems {
     switch (field_name) {
       default:
         return null;
+        break;
       case 'name':
         this.name = value;
+        break;
+
       case 'mobile':
         this.mobile = value;
+        break;
+
       case 'pincode':
         this.pincode = value;
+        break;
+
       case 'locality':
         this.locality = value;
+        break;
+
       case 'addressArea':
         this.addressArea = value;
+        break;
+
       case 'addressCity':
         this.addressCity = value;
+        break;
+
       case 'addressState':
         this.addressState = value;
+        break;
+
       case 'addressLandmark':
         this.addressLandmark = value;
+        break;
+
       case 'alternatePhone':
         this.alternatePhone = value;
+        break;
+
       case 'addressType':
         this.addressType = value;
+        break;
     }
   };
 

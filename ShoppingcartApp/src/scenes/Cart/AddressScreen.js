@@ -6,9 +6,9 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  ToastAndroid,
   FlatList,
 } from 'react-native';
+import Toast from 'react-native-easy-toast';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {inject, observer} from 'mobx-react';
 import {
@@ -61,10 +61,13 @@ class AddressScreen extends Component {
       switch (fieldType) {
         default:
           return 'default';
+
         case 'text':
           return 'default';
+
         case 'mobile':
           return 'numeric';
+
         case 'integer':
           return 'numeric';
       }
@@ -153,89 +156,28 @@ class AddressScreen extends Component {
     };
 
     const _validationHandler = () => {
-      console.log(addressArea);
       if (!(name.length > 0)) {
-        ToastAndroid.showWithGravityAndOffset(
-          'The name field is required.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+        this.toast.show('The name field is required.');
       } else if (!(mobile.length > 0 && mobile.length == 10)) {
-        ToastAndroid.showWithGravityAndOffset(
-          'Enter 10-digit mobile number.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        );
+        this.toast.show('Enter 10-digit mobile number.');
       } else if (!(pincode.length > 0 && pincode.length == 6)) {
-        ToastAndroid.showWithGravityAndOffset(
-          'Enter valid pincode.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        );
+        this.toast.show('Enter valid pincode.');
       } else if (!(locality.length > 0)) {
-        ToastAndroid.showWithGravityAndOffset(
-          'The locality field is required.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+        this.toast.show('The locality field is required.');
       } else if (!(addressArea.length > 0)) {
-        ToastAndroid.showWithGravityAndOffset(
-          'The Address(Area and Street) field is required.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+        this.toast.show('The Address(Area and Street) field is required.');
       } else if (!(addressCity.length > 0)) {
-        ToastAndroid.showWithGravityAndOffset(
-          'The City/District/Town field is required.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+        this.toast.show('The City/District/Town field is required.');
       } else if (!(addressState != 'Select state')) {
-        ToastAndroid.showWithGravityAndOffset(
-          'Please select a state.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+        this.toast.show('Please select a state.');
       } else if (!(addressLandmark.length > 0)) {
-        ToastAndroid.showWithGravityAndOffset(
-          'The Landmark field is required.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+        this.toast.show('The Landmark field is required.');
       } else if (!(addressType.length > 0)) {
-        ToastAndroid.showWithGravityAndOffset(
-          'Please select Address Type.',
-          ToastAndroid.LONG,
-          ToastAndroid.TOP,
-          50,
-          2500,
-        ); //SHORT=>2 seconds, LONG=>3.5 seconds
+        this.toast.show('Please select Address Type.');
       }
       if (alternatePhone.length > 0) {
-        if (!alternatePhone.length == 10) {
-          ToastAndroid.showWithGravityAndOffset(
-            'Enter 10-digit Alternate Phone number.',
-            ToastAndroid.LONG,
-            ToastAndroid.TOP,
-            50,
-            2500,
-          );
+        if (!(alternatePhone.length == 10)) {
+          this.toast.show('Enter 10-digit Alternate Phone number.');
         }
       }
     };
@@ -335,6 +277,16 @@ class AddressScreen extends Component {
             ListFooterComponent={formFooter}
           />
         </View>
+        <Toast
+          ref={toast => (this.toast = toast)}
+          style={{backgroundColor: '#e6dfda'}}
+          position="top"
+          positionValue={100}
+          fadeInDuration={750}
+          fadeOutDuration={1000}
+          opacity={0.8}
+          textStyle={{color: 'black'}}
+        />
       </SafeAreaView>
     );
   }
