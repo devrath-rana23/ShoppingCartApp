@@ -74,15 +74,66 @@ class AddressScreen extends Component {
       }
     };
 
+    const _returnAnimatedTitleStyles = (is_selected, value) => {
+      const [
+        titleActiveColor,
+        titleInactiveColor,
+        titleActiveSize,
+        titleInActiveSize,
+      ] = ['black', 'dimgrey', 11.5, 15];
+
+      let position = new Animated.Value(value ? 1 : 0);
+
+      return {
+        top: position.interpolate({
+          inputRange: [0, 1],
+          outputRange: [14, 0],
+        }),
+        fontSize: is_selected ? titleActiveSize : titleInActiveSize,
+        color: is_selected ? titleActiveColor : titleInactiveColor,
+      };
+    };
+
+    const _handleFocus = (is_selected, value) => {
+      if (!is_selected) {
+        let position = new Animated.Value(value ? 1 : 0);
+        Animated.timing(position, {
+          toValue: 1,
+          duration: 150,
+          useNativeDriver: true,
+        }).start();
+      }
+    };
+
+    _handleBlur = (is_selected, value) => {
+      if (is_selected && !value) {
+        let position = new Animated.Value(value ? 1 : 0);
+        Animated.timing(position, {
+          toValue: 0,
+          duration: 150,
+          useNativeDriver: true,
+        }).start();
+      }
+    };
+
     const listItems = ({item}) => {
       return (
         <View style={styles.inputView}>
           {!item.is_dropdown ? (
             <View>
+              <Animated.Text
+                style={[
+                  styles.titleStyles,
+                  _returnAnimatedTitleStyles(item.is_selected, item.value),
+                ]}>
+                {item.placeholder_name}
+              </Animated.Text>
               <TextInput
                 value={item.value}
                 autoCapitalize="none"
                 autoCorrect={false}
+                underlineColorAndroid="transparent"
+                // style={[styles.textInput, styles.customTextInput]}
                 style={
                   item.is_address
                     ? item.is_selected
@@ -97,21 +148,23 @@ class AddressScreen extends Component {
                   updateValueOfTextInput(item.id, text);
                 }}
                 multiline={item.is_address ? true : false}
-                placeholder={item.is_selected ? '' : item.placeholder_name}
+                // placeholder={item.is_selected ? '' : item.placeholder_name}
                 keyboardType={keyboardType(item.field_type)}
                 maxLength={item.mobile ? 10 : 100}
                 onFocus={() => {
+                  _handleFocus(item.is_selected, item.value);
                   updateIsSelectedForAddressItems(item.id, true);
                 }}
                 onBlur={() => {
+                  _handleBlur(item.is_selected, item.value);
                   updateIsSelectedForAddressItems(item.id, false);
                 }}
               />
-              {item.is_selected ? (
+              {/* {item.is_selected ? (
                 <Text style={styles.nameFieldText}>
                   {item.placeholder_name}
                 </Text>
-              ) : null}
+              ) : null} */}
             </View>
           ) : (
             <View
@@ -484,6 +537,22 @@ const styles = StyleSheet.create({
   dropDownButtonTextStyle: {
     color: '#000',
     fontSize: 17,
+  },
+  titleStyles: {
+    position: 'absolute',
+    fontFamily: 'Avenir-Medium',
+    left: 3,
+    left: 4,
+  },
+  textInput: {
+    fontSize: 15,
+    marginTop: 5,
+    fontFamily: 'Avenir-Medium',
+    color: 'black',
+  },
+  customTextInput: {
+    color: 'green',
+    fontSize: 15,
   },
 });
 
