@@ -123,13 +123,6 @@ class AddressScreen extends Component {
         <View style={styles.inputView}>
           {!item.is_dropdown ? (
             <View>
-              <Animated.Text
-                style={[
-                  styles.titleStyles,
-                  _returnAnimatedTitleStyles(item.is_selected, item.value),
-                ]}>
-                {item.placeholder_name}
-              </Animated.Text>
               <TextInput
                 value={item.value}
                 autoCapitalize="none"
@@ -162,6 +155,13 @@ class AddressScreen extends Component {
                   updateIsSelectedForAddressItems(item.id, false);
                 }}
               />
+              <Animated.Text
+                style={[
+                  styles.titleStyles,
+                  _returnAnimatedTitleStyles(item.is_selected, item.value),
+                ]}>
+                {item.placeholder_name}
+              </Animated.Text>
               {/* {item.is_selected ? (
                 <Text style={styles.nameFieldText}>
                   {item.placeholder_name}
