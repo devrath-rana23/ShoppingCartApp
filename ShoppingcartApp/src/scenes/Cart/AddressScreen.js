@@ -80,7 +80,8 @@ class AddressScreen extends Component {
         titleInactiveColor,
         titleActiveSize,
         titleInActiveSize,
-      ] = ['black', 'dimgrey', 11.5, 15];
+        whiteColor,
+      ] = ['black', 'dimgrey', 11.5, 15, 'rgba(255, 255, 255, 1)'];
 
       let position = new Animated.Value(value ? 1 : 0);
 
@@ -91,6 +92,7 @@ class AddressScreen extends Component {
         }),
         fontSize: is_selected ? titleActiveSize : titleInActiveSize,
         color: is_selected ? titleActiveColor : titleInactiveColor,
+        backgroundColor: whiteColor,
       };
     };
 
