@@ -37,5 +37,7 @@ export const WOMEN_ICON = require('../../assets/images/women.png');
 export const TRASH_ICON = require('../../assets/images/bin.png');
 export const HEART_ICON = require('../../assets/images/heart.png');
 export const HEART_TRANSPARENT_ICON = require('../../assets/images/heart_transparent.png');
+export const BLACK_TICK_ICON = require('../../assets/images/check-mark-black.png');
+export const GREEN_TICK_ICON = require('../../assets/images/check-mark-green.png');
 
 

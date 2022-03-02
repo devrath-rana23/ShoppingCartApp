@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, Image, FlatList, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {APP_LOGO_IMAGE} from '../../utility/appConstant/ImageUrls';
 import {COLORS} from '../../utility/appConstant/Styles';
 import HeaderComponent from './HeaderComponent';
@@ -7,6 +14,7 @@ import {
   HOME_SCREEN_NAME,
   CARTITEMS_SCREEN_NAME,
   WISHLIST_SCREEN_NAME,
+  ADDRESS_SCREEN_NAME,
 } from '../../utility/appConstant/AppConstants';
 
 const ListingComponent = ({
@@ -70,6 +78,10 @@ const ListingComponent = ({
               renderItem={listItems}
               keyExtractor={courses => courses.id}
             />
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ADDRESS_SCREEN_NAME)}>
+              <Text>Save Address</Text>
+            </TouchableOpacity>
           </View>
         )
       ) : (
