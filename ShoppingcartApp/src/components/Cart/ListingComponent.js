@@ -79,8 +79,9 @@ const ListingComponent = ({
               keyExtractor={courses => courses.id}
             />
             <TouchableOpacity
+              style={styles.saveAddressBtn}
               onPress={() => navigation.navigate(ADDRESS_SCREEN_NAME)}>
-              <Text>Save Address</Text>
+              <Text style={styles.saveAddressButton}>Save Address</Text>
             </TouchableOpacity>
           </View>
         )
@@ -138,6 +139,16 @@ const styles = StyleSheet.create({
   homeScreenText: {
     fontSize: 70,
     color: COLORS.black,
+  },
+  saveAddressButton: {
+    color: '#fff',
+    alignSelf: 'center',
+    fontSize: 18,
+  },
+  saveAddressBtn: {
+    backgroundColor: 'purple',
+    padding: 10,
+    borderRadius: 10,
   },
 });
 

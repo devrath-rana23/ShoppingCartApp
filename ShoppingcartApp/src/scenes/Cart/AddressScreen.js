@@ -6,8 +6,10 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  ScrollView,
+  FlatList,
+  Animated,
 } from 'react-native';
+import Toast from 'react-native-easy-toast';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {inject, observer} from 'mobx-react';
 import {
@@ -19,7 +21,6 @@ import {
 import {ADDRESS_SCREEN_NAME} from '../../utility/appConstant/AppConstants';
 import {COLORS} from '../../utility/appConstant/Styles';
 import SelectDropdown from 'react-native-select-dropdown';
-import {AddressTextInputComponent} from '../../components/Cart/AddressTextInputComponent';
 
 @inject('cartitems')
 @observer
@@ -37,167 +38,151 @@ class AddressScreen extends Component {
       'Karnataka',
     ];
 
-    return (
-      <SafeAreaView style={styles.safeAreaView}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.header}>
-            <View style={styles.navButton}>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.goBack()}
-                style={styles.cartButton}>
-                <Image style={styles.hamburger} source={ARROW_LEFT} />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.headerText}>{ADDRESS_SCREEN_NAME}</Text>
-            <TouchableOpacity
-              style={styles.cartButton}
-              onPress={() => this.props.navigation.openDrawer()}>
-              <Image style={styles.hamburger} source={HAMBURGER_ICON} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.body}>
-            <Text style={styles.headingText}>Add Address</Text>
-            <Text style={styles.addYourAddress}>Please add your address</Text>
-            {/* <AddressTextInputComponent /> */}
-            <View style={styles.inputView}>
+    const {
+      addressItemsDummy,
+      updateIsSelectedForAddressItems,
+      homeButtonSelected,
+      workButtonSelected,
+      updateHomeWorkButtonSelected,
+      updateValueOfTextInput,
+      updateFieldStateValue,
+      name,
+      mobile,
+      pincode,
+      locality,
+      addressArea,
+      addressCity,
+      addressState,
+      addressLandmark,
+      alternatePhone,
+      addressType,
+    } = this.props.cartitems;
+
+    const keyboardType = fieldType => {
+      switch (fieldType) {
+        default:
+          return 'default';
+
+        case 'text':
+          return 'default';
+
+        case 'mobile':
+          return 'numeric';
+
+        case 'integer':
+          return 'numeric';
+      }
+    };
+
+    const _returnAnimatedTitleStyles = (is_selected, value) => {
+      const [
+        titleActiveColor,
+        titleInactiveColor,
+        titleActiveSize,
+        titleInActiveSize,
+        whiteColor,
+      ] = ['black', 'dimgrey', 11.5, 15, 'rgba(255, 255, 255, 1)'];
+
+      let position = new Animated.Value(value ? 1 : 0);
+
+      return {
+        top: position.interpolate({
+          inputRange: [0, 1],
+          outputRange: [14, 0],
+        }),
+        fontSize: is_selected ? titleActiveSize : titleInActiveSize,
+        color: is_selected ? titleActiveColor : titleInactiveColor,
+        backgroundColor: whiteColor,
+      };
+    };
+
+    const _handleFocus = (is_selected, value) => {
+      if (!is_selected) {
+        let position = new Animated.Value(value ? 1 : 0);
+        Animated.timing(position, {
+          toValue: 1,
+          duration: 150,
+          useNativeDriver: true,
+        }).start();
+      }
+    };
+
+    _handleBlur = (is_selected, value) => {
+      if (is_selected && !value) {
+        let position = new Animated.Value(value ? 1 : 0);
+        Animated.timing(position, {
+          toValue: 0,
+          duration: 150,
+          useNativeDriver: true,
+        }).start();
+      }
+    };
+
+    const listItems = ({item}) => {
+      return (
+        <View style={styles.inputView}>
+          {!item.is_dropdown ? (
+            <View>
               <TextInput
+                value={item.value}
                 autoCapitalize="none"
                 autoCorrect={false}
+                underlineColorAndroid="transparent"
+                // style={[styles.textInput, styles.customTextInput]}
                 style={
-                  this.state.isSelected ? styles.input : styles.inputNotSelected
+                  item.is_address
+                    ? item.is_selected
+                      ? styles.inputAddress
+                      : styles.inputAddressNotSelected
+                    : item.is_selected
+                    ? styles.input
+                    : styles.inputNotSelected
                 }
-                onChangeText={() => {}}
-                onFocus={() =>
-                  this.setState({
-                    isSelected: true,
-                  })
-                }
-                onEndEditing={() =>
-                  this.setState({
-                    isSelected: false,
-                  })
-                }
+                onChangeText={text => {
+                  updateFieldStateValue(item.field_name, text);
+                  updateValueOfTextInput(item.id, text);
+                }}
+                multiline={item.is_address ? true : false}
+                // placeholder={item.is_selected ? '' : item.placeholder_name}
+                keyboardType={keyboardType(item.field_type)}
+                maxLength={item.mobile ? 10 : 100}
+                onFocus={() => {
+                  _handleFocus(item.is_selected, item.value);
+                  updateIsSelectedForAddressItems(item.id, true);
+                }}
+                onBlur={() => {
+                  _handleBlur(item.is_selected, item.value);
+                  updateIsSelectedForAddressItems(item.id, false);
+                }}
               />
-              <Text style={styles.nameFieldText}>Full Name</Text>
+              <Animated.Text
+                style={[
+                  styles.titleStyles,
+                  _returnAnimatedTitleStyles(item.is_selected, item.value),
+                ]}>
+                {item.placeholder_name}
+              </Animated.Text>
+              {/* {item.is_selected ? (
+                <Text style={styles.nameFieldText}>
+                  {item.placeholder_name}
+                </Text>
+              ) : null} */}
             </View>
-            <View style={styles.inputView}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={
-                  this.state.isSelected ? styles.input : styles.inputNotSelected
-                }
-                placeholder="10 - Digit mobile number"
-                onChangeText={() => {}}
-                onFocus={() =>
-                  this.setState({
-                    isSelected: true,
-                  })
-                }
-                onEndEditing={() =>
-                  this.setState({
-                    isSelected: false,
-                  })
-                }
-              />
-            </View>
-            <View style={styles.inputView}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={
-                  this.state.isSelected ? styles.input : styles.inputNotSelected
-                }
-                placeholder="Pincode"
-                onChangeText={() => {}}
-                onFocus={() =>
-                  this.setState({
-                    isSelected: true,
-                  })
-                }
-                onEndEditing={() =>
-                  this.setState({
-                    isSelected: false,
-                  })
-                }
-              />
-            </View>
-            <View style={styles.inputView}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={
-                  this.state.isSelected ? styles.input : styles.inputNotSelected
-                }
-                placeholder="Locality"
-                onChangeText={() => {}}
-                onFocus={() =>
-                  this.setState({
-                    isSelected: true,
-                  })
-                }
-                onEndEditing={() =>
-                  this.setState({
-                    isSelected: false,
-                  })
-                }
-              />
-            </View>
-            <View style={styles.inputView}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={
-                  this.state.isSelected
-                    ? styles.inputAddress
-                    : styles.inputAddressNotSelected
-                }
-                placeholder="Address (Area and Street)"
-                onChangeText={() => {}}
-                multiline={true}
-                onFocus={() =>
-                  this.setState({
-                    isSelected: true,
-                  })
-                }
-                onEndEditing={() =>
-                  this.setState({
-                    isSelected: false,
-                  })
-                }
-              />
-            </View>
-            <View style={styles.inputView}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={
-                  this.state.isSelected ? styles.input : styles.inputNotSelected
-                }
-                placeholder="City/District/Town"
-                onChangeText={() => {}}
-                onFocus={() =>
-                  this.setState({
-                    isSelected: true,
-                  })
-                }
-                onEndEditing={() =>
-                  this.setState({
-                    isSelected: false,
-                  })
-                }
-              />
-            </View>
-            <View style={styles.inputView}>
+          ) : (
+            <View
+              style={{
+                marginTop: 9,
+                width: '100%',
+              }}>
               <SelectDropdown
-                buttonStyle={
-                  this.state.isSelected
-                    ? styles.dropdown
-                    : styles.dropdownNotSelected
-                }
+                buttonStyle={styles.dropDownButtonStyle}
+                buttonTextStyle={styles.dropDownButtonTextStyle}
+                dropdownStyle={{}}
+                rowStyle={{}}
+                rowTextStyle={{}}
                 data={states}
                 onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
+                  updateFieldStateValue(item.field_name, selectedItem);
                 }}
                 defaultButtonText="Select state"
                 buttonTextAfterSelection={(selectedItem, index) => {
@@ -212,71 +197,143 @@ class AddressScreen extends Component {
                 }}
               />
             </View>
-            <View style={styles.inputView}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={
-                  this.state.isSelected ? styles.input : styles.inputNotSelected
-                }
-                placeholder="Land Mark"
-                onChangeText={() => {}}
-                onFocus={() =>
-                  this.setState({
-                    isSelected: true,
-                  })
-                }
-                onEndEditing={() =>
-                  this.setState({
-                    isSelected: false,
-                  })
-                }
-              />
-            </View>
-            <View style={styles.inputView}>
-              <TextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                style={
-                  this.state.isSelected ? styles.input : styles.inputNotSelected
-                }
-                placeholder="Alternate Phone(Optional)"
-                onChangeText={() => {}}
-                onFocus={() =>
-                  this.setState({
-                    isSelected: true,
-                  })
-                }
-                onEndEditing={() =>
-                  this.setState({
-                    isSelected: false,
-                  })
-                }
-              />
-            </View>
-            <View>
-              <Text style={styles.addressTypeText}>Address Type</Text>
-            </View>
-            <View style={styles.addressTypeButtons}>
-              <TouchableOpacity style={styles.adressButtons}>
-                <Image style={styles.addressIcons} source={BLACK_TICK_ICON} />
-                <Text style={styles.adressButtonsText}>Home</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.adressButtons}>
-                <Image style={styles.addressIcons} source={BLACK_TICK_ICON} />
-                <Text style={styles.adressButtonsText}>Work</Text>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity style={styles.formActionButtonsSave}>
-                <Text style={styles.formActionButtonsText}>Save</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.formActionButtonsCancel}>
-                <Text style={styles.formActionButtonsText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
+          )}
+        </View>
+      );
+    };
+
+    const _validationHandler = () => {
+      if (!(name.length > 0)) {
+        this.toast.show('The name field is required.');
+      } else if (!(mobile.length > 0 && mobile.length == 10)) {
+        this.toast.show('Enter 10-digit mobile number.');
+      } else if (!(pincode.length > 0 && pincode.length == 6)) {
+        this.toast.show('Enter valid pincode.');
+      } else if (!(locality.length > 0)) {
+        this.toast.show('The locality field is required.');
+      } else if (!(addressArea.length > 0)) {
+        this.toast.show('The Address(Area and Street) field is required.');
+      } else if (!(addressCity.length > 0)) {
+        this.toast.show('The City/District/Town field is required.');
+      } else if (!(addressState != 'Select state')) {
+        this.toast.show('Please select a state.');
+      } else if (!(addressLandmark.length > 0)) {
+        this.toast.show('The Landmark field is required.');
+      } else if (!(addressType.length > 0)) {
+        this.toast.show('Please select Address Type.');
+      }
+      if (alternatePhone.length > 0) {
+        if (!(alternatePhone.length == 10)) {
+          this.toast.show('Enter 10-digit Alternate Phone number.');
+        }
+      }
+    };
+
+    const formHeader = () => {
+      return (
+        <View>
+          <Text style={styles.headingText}>Add Address</Text>
+          <Text style={styles.addYourAddress}>Please add your address</Text>
+        </View>
+      );
+    };
+
+    const formFooter = () => {
+      return (
+        <View>
+          <View>
+            <Text style={styles.addressTypeText}>Address Type</Text>
           </View>
-        </ScrollView>
+          <View style={styles.addressTypeButtons}>
+            <TouchableOpacity
+              onPress={() => {
+                updateHomeWorkButtonSelected(true, false);
+                updateFieldStateValue('addressType', 'Home');
+              }}
+              style={
+                homeButtonSelected
+                  ? styles.adressButtonsSelected
+                  : styles.adressButtons
+              }>
+              <Image
+                style={styles.addressIcons}
+                source={homeButtonSelected ? GREEN_TICK_ICON : BLACK_TICK_ICON}
+              />
+              <Text style={styles.adressButtonsText}>Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                updateHomeWorkButtonSelected(false, true);
+                updateFieldStateValue('addressType', 'Work');
+              }}
+              style={
+                workButtonSelected
+                  ? styles.adressButtonsSelected
+                  : styles.adressButtons
+              }>
+              <Image
+                style={styles.addressIcons}
+                source={workButtonSelected ? GREEN_TICK_ICON : BLACK_TICK_ICON}
+              />
+              <Text style={styles.adressButtonsText}>Work</Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <TouchableOpacity
+              onPress={() => _validationHandler()}
+              style={styles.formActionButtonsSave}>
+              <Text style={styles.formActionButtonsText}>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.goBack()}
+              style={styles.formActionButtonsCancel}>
+              <Text style={styles.formActionButtonsText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    };
+
+    return (
+      <SafeAreaView style={styles.safeAreaView}>
+        <View style={styles.header}>
+          <View style={styles.navButton}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.goBack()}
+              style={styles.cartButton}>
+              <Image style={styles.hamburger} source={ARROW_LEFT} />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.headerText}>{ADDRESS_SCREEN_NAME}</Text>
+          <TouchableOpacity
+            style={styles.cartButton}
+            onPress={() => this.props.navigation.openDrawer()}>
+            <Image style={styles.hamburger} source={HAMBURGER_ICON} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.body}>
+          <FlatList
+            style={{height: '90%'}}
+            showsVerticalScrollIndicator={false}
+            data={addressItemsDummy}
+            initialNumToRender={9}
+            renderItem={listItems}
+            keyExtractor={items => items.id}
+            ListHeaderComponent={formHeader}
+            ListFooterComponent={formFooter}
+          />
+        </View>
+        <Toast
+          ref={toast => (this.toast = toast)}
+          style={{backgroundColor: '#e6dfda'}}
+          position="top"
+          positionValue={100}
+          fadeInDuration={750}
+          fadeOutDuration={1000}
+          opacity={0.8}
+          textStyle={{color: 'black'}}
+        />
       </SafeAreaView>
     );
   }
@@ -425,14 +482,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   addressIcons: {
-    height: 10,
-    width: 10,
+    height: 15,
+    width: 15,
+    marginRight: 5,
   },
   adressButtons: {
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#d6cccb',
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  adressButtonsSelected: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: 'green',
     paddingVertical: 10,
     paddingHorizontal: 50,
     justifyContent: 'center',
@@ -459,6 +528,33 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  dropDownButtonStyle: {
+    borderWidth: 1,
+    borderColor: '#d6cccb',
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    width: '100%',
+  },
+  dropDownButtonTextStyle: {
+    color: '#000',
+    fontSize: 17,
+  },
+  titleStyles: {
+    position: 'absolute',
+    fontFamily: 'Avenir-Medium',
+    left: 3,
+    left: 4,
+  },
+  textInput: {
+    fontSize: 15,
+    marginTop: 5,
+    fontFamily: 'Avenir-Medium',
+    color: 'black',
+  },
+  customTextInput: {
+    color: 'green',
+    fontSize: 15,
   },
 });
 
