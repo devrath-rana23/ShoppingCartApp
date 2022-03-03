@@ -13,7 +13,7 @@ import Toast from 'react-native-easy-toast';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {inject, observer} from 'mobx-react';
 import {
-  HAMBURGER_ICON,
+  MOBILE_PHONE_ICON,
   ARROW_LEFT,
   BLACK_TICK_ICON,
   GREEN_TICK_ICON,
@@ -56,14 +56,26 @@ class SavedAddressesScreen extends Component {
     const listItems = ({item}) => {
       return (
         <View style={styles.listView}>
-          <Text>Name</Text>
+          <View style={styles.userNameView}>
+            <Image source={GREEN_TICK_ICON} style={styles.hamburger} />
+            <Text style={styles.userNameText}>{item.name}</Text>
+          </View>
+          <View style={styles.addressView}>
+            <Text style={styles.addressText}>{item.addressArea}</Text>
+          </View>
+          <View style={styles.mobileNumberView}>
+            <Image source={MOBILE_PHONE_ICON} style={styles.hamburger} />
+            <Text style={styles.mobileNumberText}>+91 {item.mobile}</Text>
+          </View>
         </View>
       );
     };
     const formFooter = () => {
       return (
         <View style={styles.formFooterView}>
-          <Text>Footer</Text>
+          <TouchableOpacity style={styles.continueButton}>
+            <Text style={styles.continueButtonText}>Continue</Text>
+          </TouchableOpacity>
         </View>
       );
     };
@@ -153,16 +165,56 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 10,
   },
+  continueButton: {
+    backgroundColor: '#d99830',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 10,
+  },
   addNewButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',
+  },
+  continueButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
   },
   listView: {
     flex: 6,
   },
   formFooterView: {
     flex: 2,
+  },
+  userNameView: {
+    flexDirection: 'row',
+  },
+  userNameText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: 'black',
+    marginLeft: 10,
+  },
+  addressView: {
+    marginTop: 10,
+    marginLeft: 35,
+  },
+  addressText: {
+    fontSize: 16,
+  },
+  mobileNumberView: {
+    marginTop: 10,
+    flexDirection: 'row',
+    marginLeft: 35,
+  },
+  mobileNumberText: {
+    color: 'black',
+    fontWeight: 'bold',
+    marginLeft: 10,
+    fontSize: 16,
   },
 });
 

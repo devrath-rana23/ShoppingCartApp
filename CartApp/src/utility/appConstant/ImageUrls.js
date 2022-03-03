@@ -39,5 +39,7 @@ export const HEART_ICON = require('../../assets/images/heart.png');
 export const HEART_TRANSPARENT_ICON = require('../../assets/images/heart_transparent.png');
 export const BLACK_TICK_ICON = require('../../assets/images/check-mark-black.png');
 export const GREEN_TICK_ICON = require('../../assets/images/check-mark-green.png');
+export const MOBILE_PHONE_ICON = require('../../assets/images/smartphone.png');
+
 
 
