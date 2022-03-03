@@ -25,10 +25,6 @@ import SelectDropdown from 'react-native-select-dropdown';
 @inject('addresses')
 @observer
 class AddressScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {isSelected: false};
-  }
 
   render() {
     const states = [

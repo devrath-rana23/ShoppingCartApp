@@ -22,14 +22,24 @@ import {ADDRESS_SCREEN_NAME} from '../../utility/appConstant/AppConstants';
 import {COLORS} from '../../utility/appConstant/Styles';
 import SelectDropdown from 'react-native-select-dropdown';
 
-const SavedAddressesScreen = () => {
-  return (
-    <View>
-      <Text>SavedAddressesScreen</Text>
-    </View>
-  );
-};
-
-export default SavedAddressesScreen;
+@inject('addresses')
+@observer
+class SavedAddressesScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {isSelected: false};
+  }
+  render() {
+    return (
+      <SafeAreaView>
+        <View>
+          <Text>SavedAddresses</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
 
 const styles = StyleSheet.create({});
+
+export default SavedAddressesScreen;
