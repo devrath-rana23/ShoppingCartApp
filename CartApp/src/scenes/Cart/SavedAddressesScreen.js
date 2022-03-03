@@ -18,7 +18,10 @@ import {
   BLACK_TICK_ICON,
   GREEN_TICK_ICON,
 } from '../../utility/appConstant/ImageUrls';
-import {SAVED_ADDRESS_SCREEN_NAME} from '../../utility/appConstant/AppConstants';
+import {
+  SAVED_ADDRESS_SCREEN_NAME,
+  ADDRESS_SCREEN_NAME,
+} from '../../utility/appConstant/AppConstants';
 import {COLORS} from '../../utility/appConstant/Styles';
 import SelectDropdown from 'react-native-select-dropdown';
 
@@ -52,58 +55,63 @@ class SavedAddressesScreen extends Component {
 
     const listItems = ({item}) => {
       return (
-        <View>
-          <Text>{item.name}</Text>
+        <View style={styles.listView}>
+          <Text>Name</Text>
         </View>
       );
     };
     const formFooter = () => {
       return (
-        <View>
+        <View style={styles.formFooterView}>
           <Text>Footer</Text>
         </View>
       );
     };
     const formHeader = () => {
       return (
-        <View>
-          <Text>Header</Text>
+        <View style={styles.formHeaderView}>
+          <Text style={styles.headerText}>{SAVED_ADDRESS_SCREEN_NAME}</Text>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate(ADDRESS_SCREEN_NAME)}
+            style={styles.addNewButton}>
+            <Text style={styles.addNewButtonText}>Add New</Text>
+          </TouchableOpacity>
         </View>
       );
     };
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.header}>
-          <View style={styles.navButton}>
+          <View>
             <TouchableOpacity
               onPress={() => this.props.navigation.goBack()}
               style={styles.cartButton}>
               <Image style={styles.hamburger} source={ARROW_LEFT} />
             </TouchableOpacity>
           </View>
-          <View style={styles.body}>
-            <FlatList
-              style={{height: '90%'}}
-              showsVerticalScrollIndicator={false}
-              data={savedAddressItemsDummy}
-              initialNumToRender={9}
-              renderItem={listItems}
-              keyExtractor={items => items.id}
-              ListHeaderComponent={formHeader}
-              ListFooterComponent={formFooter}
-            />
-          </View>
-          <Toast
-            ref={toast => (this.toast = toast)}
-            style={{backgroundColor: '#e6dfda'}}
-            position="top"
-            positionValue={100}
-            fadeInDuration={750}
-            fadeOutDuration={1000}
-            opacity={0.8}
-            textStyle={{color: 'black'}}
+        </View>
+        <View style={styles.body}>
+          <FlatList
+            style={{height: '90%'}}
+            showsVerticalScrollIndicator={false}
+            data={savedAddressItemsDummy}
+            initialNumToRender={9}
+            renderItem={listItems}
+            keyExtractor={items => items.id}
+            ListHeaderComponent={formHeader}
+            ListFooterComponent={formFooter}
           />
         </View>
+        <Toast
+          ref={toast => (this.toast = toast)}
+          style={{backgroundColor: '#e6dfda'}}
+          position="top"
+          positionValue={100}
+          fadeInDuration={750}
+          fadeOutDuration={1000}
+          opacity={0.8}
+          textStyle={{color: 'black'}}
+        />
       </SafeAreaView>
     );
   }
@@ -115,13 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginHorizontal: 10,
-    marginTop: 10,
-  },
-  navButton: {
-    flex: 1,
   },
   cartButton: {
     paddingVertical: 10,
@@ -132,7 +134,35 @@ const styles = StyleSheet.create({
   },
   body: {
     marginHorizontal: 10,
+    flex: 10,
+  },
+  formHeaderView: {
+    flex: 2,
+    marginBottom: 10,
+  },
+  headerText: {
+    color: 'black',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  addNewButton: {
+    backgroundColor: '#bdc2c9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderRadius: 8,
     marginTop: 10,
+  },
+  addNewButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  listView: {
+    flex: 6,
+  },
+  formFooterView: {
+    flex: 2,
   },
 });
 
