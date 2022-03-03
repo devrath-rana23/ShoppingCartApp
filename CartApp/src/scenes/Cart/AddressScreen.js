@@ -22,7 +22,7 @@ import {ADDRESS_SCREEN_NAME} from '../../utility/appConstant/AppConstants';
 import {COLORS} from '../../utility/appConstant/Styles';
 import SelectDropdown from 'react-native-select-dropdown';
 
-@inject('cartitems')
+@inject('addresses')
 @observer
 class AddressScreen extends Component {
   constructor(props) {
@@ -56,7 +56,7 @@ class AddressScreen extends Component {
       addressLandmark,
       alternatePhone,
       addressType,
-    } = this.props.cartitems;
+    } = this.props.addresses;
 
     const keyboardType = fieldType => {
       switch (fieldType) {
