@@ -11,7 +11,21 @@ class Addresses {
   addressLandmark = '';
   alternatePhone = '';
   addressType = '';
-  savedAddressItemsDummy = [{}];
+  savedAddressItemsDummy = [
+    {
+      id: '1',
+      name: 'Devrath',
+      mobile: '9871020867',
+      pincode: '110010',
+      locality: 'Delhi',
+      addressArea: 'Mayur Vihar',
+      addressCity: 'New Delhi',
+      addressState: 'NCT',
+      addressLandmark: 'Qutub Minar',
+      alternatePhone: '9871020876',
+      addressType: 'Home',
+    },
+  ];
   addressItemsDummy = [
     {
       id: 1,

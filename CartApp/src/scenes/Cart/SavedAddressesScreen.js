@@ -53,7 +53,7 @@ class SavedAddressesScreen extends Component {
     const listItems = ({item}) => {
       return (
         <View>
-          <Text>List</Text>
+          <Text>{item.name}</Text>
         </View>
       );
     };
