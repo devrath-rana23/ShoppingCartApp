@@ -4,6 +4,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import SplashScreen from '../scenes/Splash/SplashScreen';
 import CartItemsScreen from '../scenes/Cart/CartItemsScreen';
 import AddressScreen from '../scenes/Cart/AddressScreen';
+import SavedAddressesScreen from '../scenes/Cart/SavedAddressesScreen';
 import CategoryCourseListScreen from '../scenes/Cart/CategoryCourseListScreen';
 import WishlistScreen from '../scenes/Cart/WishlistScreen';
 import HomeScreen from '../scenes/Cart/HomeScreen';
@@ -14,6 +15,7 @@ import {
   CATEGORY_SCREEN_NAME,
   WISHLIST_SCREEN_NAME,
   ADDRESS_SCREEN_NAME,
+  SAVED_ADDRESS_SCREEN_NAME,
 } from '../utility/appConstant/AppConstants';
 
 const Stack = createNativeStackNavigator();
@@ -35,6 +37,10 @@ const Root = () => {
       <Stack.Screen name={CARTITEMS_SCREEN_NAME} component={CartItemsScreen} />
       <Stack.Screen name={WISHLIST_SCREEN_NAME} component={WishlistScreen} />
       <Stack.Screen name={ADDRESS_SCREEN_NAME} component={AddressScreen} />
+      <Stack.Screen
+        name={SAVED_ADDRESS_SCREEN_NAME}
+        component={SavedAddressesScreen}
+      />
     </Drawer.Navigator>
   );
 };
@@ -55,6 +61,10 @@ const Route = () => {
       <Stack.Screen name={WISHLIST_SCREEN_NAME} component={WishlistScreen} />
       <Stack.Screen name="Root" component={Root} />
       <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen
+        name={SAVED_ADDRESS_SCREEN_NAME}
+        component={SavedAddressesScreen}
+      />
       <Stack.Screen name={ADDRESS_SCREEN_NAME} component={AddressScreen} />
     </Stack.Navigator>
   );

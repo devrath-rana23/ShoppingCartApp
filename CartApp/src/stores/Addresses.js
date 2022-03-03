@@ -11,6 +11,7 @@ class Addresses {
   addressLandmark = '';
   alternatePhone = '';
   addressType = '';
+  savedAddressItemsDummy = [{}];
   addressItemsDummy = [
     {
       id: 1,

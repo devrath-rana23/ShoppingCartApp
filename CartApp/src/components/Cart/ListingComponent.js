@@ -14,7 +14,7 @@ import {
   HOME_SCREEN_NAME,
   CARTITEMS_SCREEN_NAME,
   WISHLIST_SCREEN_NAME,
-  ADDRESS_SCREEN_NAME,
+  SAVED_ADDRESS_SCREEN_NAME,
 } from '../../utility/appConstant/AppConstants';
 
 const ListingComponent = ({
@@ -80,8 +80,8 @@ const ListingComponent = ({
             />
             <TouchableOpacity
               style={styles.saveAddressBtn}
-              onPress={() => navigation.navigate(ADDRESS_SCREEN_NAME)}>
-              <Text style={styles.saveAddressButton}>Save Address</Text>
+              onPress={() => navigation.navigate(SAVED_ADDRESS_SCREEN_NAME)}>
+              <Text style={styles.saveAddressButton}>Saved Location</Text>
             </TouchableOpacity>
           </View>
         )
