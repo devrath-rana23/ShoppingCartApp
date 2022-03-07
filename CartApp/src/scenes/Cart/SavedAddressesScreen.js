@@ -56,21 +56,24 @@ class SavedAddressesScreen extends Component {
     const listItems = ({item}) => {
       return (
         <View style={styles.listView}>
-          <View style={styles.userNameView}>
-            <Image source={GREEN_TICK_ICON} style={styles.hamburger} />
-            <Text style={styles.userNameText}>{item.name}</Text>
-          </View>
-          <View style={styles.addressView}>
-            <Text style={styles.addressText}>{item.addressArea}</Text>
-          </View>
-          <View style={styles.mobileNumberView}>
-            <Image source={MOBILE_PHONE_ICON} style={styles.hamburger} />
-            <Text style={styles.mobileNumberText}>+91 {item.mobile}</Text>
-          </View>
+          <TouchableOpacity>
+            <View style={styles.userNameView}>
+              <Image source={GREEN_TICK_ICON} style={styles.hamburger} />
+              <Text style={styles.userNameText}>{item.name}</Text>
+            </View>
+            <View style={styles.addressView}>
+              <Text style={styles.addressText}>{item.addressArea}</Text>
+            </View>
+            <View style={styles.mobileNumberView}>
+              <Image source={MOBILE_PHONE_ICON} style={styles.hamburger} />
+              <Text style={styles.mobileNumberText}>+91 {item.mobile}</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.separator} />
         </View>
       );
     };
-    const formFooter = () => {
+    const FormFooter = () => {
       return (
         <View style={styles.formFooterView}>
           <TouchableOpacity style={styles.continueButton}>
@@ -104,15 +107,15 @@ class SavedAddressesScreen extends Component {
         </View>
         <View style={styles.body}>
           <FlatList
-            style={{height: '90%'}}
+            style={{height: '80%'}}
             showsVerticalScrollIndicator={false}
             data={savedAddressItemsDummy}
             initialNumToRender={9}
             renderItem={listItems}
             keyExtractor={items => items.id}
             ListHeaderComponent={formHeader}
-            ListFooterComponent={formFooter}
           />
+          <FormFooter />
         </View>
         <Toast
           ref={toast => (this.toast = toast)}
@@ -215,6 +218,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 10,
     fontSize: 16,
+  },
+  separator: {
+    borderWidth: 0.5,
+    marginTop: 10,
   },
 });
 
