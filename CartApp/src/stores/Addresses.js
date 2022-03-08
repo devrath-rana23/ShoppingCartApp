@@ -24,6 +24,7 @@ class Addresses {
       addressLandmark: 'Qutub Minar',
       alternatePhone: '9871020876',
       addressType: 'Home',
+      isSelected: false,
     },
   ];
   addressItemsDummy = [
@@ -140,6 +141,86 @@ class Addresses {
     makeAutoObservable(this);
   }
 
+  saveNewLocation = () => {
+    let isSaved = false;
+    let isAdrressFormReset = false;
+    data = [
+      ...this.savedAddressItemsDummy,
+      {
+        id: Math.floor(Math.random() * 1000000 + 1),
+        name: this.name,
+        mobile: this.mobile,
+        pincode: this.pincode,
+        locality: this.locality,
+        addressArea: this.addressArea,
+        addressCity: this.addressCity,
+        addressState: this.addressState,
+        addressLandmark: this.addressLandmark,
+        alternatePhone: this.alternatePhone,
+        addressType: this.addressType,
+        isSelected: false,
+      },
+    ];
+    isSaved = this.setSavedAddressItems(data);
+
+    if (isSaved) {
+      isAdrressFormReset = this.resetAddressForm();
+      if (isAdrressFormReset) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  resetAddressForm = () => {
+    this.name = '';
+    this.mobile = '';
+    this.pincode = '';
+    this.locality = '';
+    this.addressArea = '';
+    this.addressCity = '';
+    this.addressState = '';
+    this.addressLandmark = '';
+    this.alternatePhone = '';
+    this.addressType = '';
+    return true;
+  };
+
+  updateIsSelectedForSavedLocation = id => {
+    data = this.savedAddressItemsDummy.map(item => {
+      return item.id == id
+        ? {
+            id,
+            name: item.name,
+            mobile: item.mobile,
+            pincode: item.pincode,
+            locality: item.locality,
+            addressArea: item.addressArea,
+            addressCity: item.addressCity,
+            addressState: item.addressState,
+            addressLandmark: item.addressLandmark,
+            alternatePhone: item.alternatePhone,
+            addressType: item.addressType,
+            isSelected: true,
+          }
+        : {
+            id: item.id,
+            name: item.name,
+            mobile: item.mobile,
+            pincode: item.pincode,
+            locality: item.locality,
+            addressArea: item.addressArea,
+            addressCity: item.addressCity,
+            addressState: item.addressState,
+            addressLandmark: item.addressLandmark,
+            alternatePhone: item.alternatePhone,
+            addressType: item.addressType,
+            isSelected: false,
+          };
+    });
+    this.setSavedAddressItems(data);
+  };
+
   updateFieldStateValue = (field_name, value) => {
     switch (field_name) {
       default:
@@ -232,6 +313,11 @@ class Addresses {
 
   setAddressItems = data => {
     this.addressItemsDummy = data;
+  };
+
+  setSavedAddressItems = data => {
+    this.savedAddressItemsDummy = data;
+    return true;
   };
 }
 

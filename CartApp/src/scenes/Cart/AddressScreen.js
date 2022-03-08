@@ -25,7 +25,6 @@ import SelectDropdown from 'react-native-select-dropdown';
 @inject('addresses')
 @observer
 class AddressScreen extends Component {
-
   render() {
     const states = [
       'Uttar Pradesh',
@@ -52,6 +51,7 @@ class AddressScreen extends Component {
       addressLandmark,
       alternatePhone,
       addressType,
+      saveNewLocation,
     } = this.props.addresses;
 
     const keyboardType = fieldType => {
@@ -199,28 +199,48 @@ class AddressScreen extends Component {
     };
 
     const _validationHandler = () => {
+      let isValid = true;
       if (!(name.length > 0)) {
+        isValid = false;
         this.toast.show('The name field is required.');
       } else if (!(mobile.length > 0 && mobile.length == 10)) {
+        isValid = false;
         this.toast.show('Enter 10-digit mobile number.');
       } else if (!(pincode.length > 0 && pincode.length == 6)) {
+        isValid = false;
         this.toast.show('Enter valid pincode.');
       } else if (!(locality.length > 0)) {
+        isValid = false;
         this.toast.show('The locality field is required.');
       } else if (!(addressArea.length > 0)) {
+        isValid = false;
         this.toast.show('The Address(Area and Street) field is required.');
       } else if (!(addressCity.length > 0)) {
+        isValid = false;
         this.toast.show('The City/District/Town field is required.');
       } else if (!(addressState != 'Select state')) {
+        isValid = false;
         this.toast.show('Please select a state.');
       } else if (!(addressLandmark.length > 0)) {
+        isValid = false;
         this.toast.show('The Landmark field is required.');
       } else if (!(addressType.length > 0)) {
+        isValid = false;
         this.toast.show('Please select Address Type.');
       }
       if (alternatePhone.length > 0) {
         if (!(alternatePhone.length == 10)) {
+          isValid = false;
           this.toast.show('Enter 10-digit Alternate Phone number.');
+        }
+      }
+      if (isValid) {
+        let isSaved = false;
+        isSaved = saveNewLocation();
+        if (isSaved) {
+          this.props.navigation.goBack();
+        } else {
+          this.toast.show('Address not saved.');
         }
       }
     };

@@ -33,32 +33,19 @@ class SavedAddressesScreen extends Component {
     this.state = {isSelected: false};
   }
   render() {
-    const {
-      savedAddressItemsDummy,
-      updateIsSelectedForAddressItems,
-      homeButtonSelected,
-      workButtonSelected,
-      updateHomeWorkButtonSelected,
-      updateValueOfTextInput,
-      updateFieldStateValue,
-      name,
-      mobile,
-      pincode,
-      locality,
-      addressArea,
-      addressCity,
-      addressState,
-      addressLandmark,
-      alternatePhone,
-      addressType,
-    } = this.props.addresses;
+    const {savedAddressItemsDummy, updateIsSelectedForSavedLocation} =
+      this.props.addresses;
 
     const listItems = ({item}) => {
       return (
         <View style={styles.listView}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => updateIsSelectedForSavedLocation(item.id)}>
             <View style={styles.userNameView}>
-              <Image source={GREEN_TICK_ICON} style={styles.hamburger} />
+              <Image
+                source={item.isSelected ? GREEN_TICK_ICON : BLACK_TICK_ICON}
+                style={styles.hamburger}
+              />
               <Text style={styles.userNameText}>{item.name}</Text>
             </View>
             <View style={styles.addressView}>
@@ -221,7 +208,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     borderWidth: 0.5,
-    marginTop: 10,
+    marginVertical: 10,
   },
 });
 
