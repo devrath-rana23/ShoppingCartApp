@@ -286,6 +286,10 @@ class Cartitems {
     this.cartItems = data;
   };
 
+  getItems = () => {
+    data = this.cartItemsDummy[1];
+    this.setItems(data);
+  };
   getCategoryCourses = (category, subcategory) => {
     try {
       let array = [];

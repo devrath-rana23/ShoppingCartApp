@@ -87,7 +87,44 @@ const ListingComponent = ({
         )
       ) : (
         <View style={styles.homeScreen}>
-          <Text style={styles.homeScreenText}>Welcome!</Text>
+          <View>
+            <Text style={styles.ItemByCatHeading}>Men's Fashion</Text>
+            <FlatList
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              data={state.filter(courses => courses.category_id == 1)}
+              initialNumToRender={4}
+              renderItem={({item}) => (
+                <View style={styles.itemContainerByCat}>
+                  <Image
+                    style={styles.itemImageByCat}
+                    source={{uri: item.image_url}}
+                  />
+                  <Text>{item.name.substring(0, 15)}...</Text>
+                </View>
+              )}
+              keyExtractor={courses => courses.id}
+            />
+          </View>
+          <View>
+            <Text style={styles.ItemByCatHeading}>Women's Fashion</Text>
+            <FlatList
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              data={state.filter(courses => courses.category_id == 2)}
+              initialNumToRender={4}
+              renderItem={({item}) => (
+                <View style={styles.itemContainerByCat}>
+                  <Image
+                    style={styles.itemImageByCat}
+                    source={{uri: item.image_url}}
+                  />
+                  <Text>{item.name.substring(0, 15)}...</Text>
+                </View>
+              )}
+              keyExtractor={courses => courses.id}
+            />
+          </View>
         </View>
       )}
     </View>
@@ -98,6 +135,28 @@ const styles = StyleSheet.create({
   bodyStyle: {
     backgroundColor: COLORS.whiteForScreenBackground,
     flex: 1,
+  },
+  homeScreen: {
+    marginTop: 50,
+  },
+  itemImageByCat: {
+    height: 70,
+    width: 70,
+    borderRadius: 50,
+    marginHorizontal: 10,
+  },
+  itemContainerByCat: {
+    marginBottom: 10,
+    backgroundColor: COLORS.whiteForItemCardBackground,
+    paddingVertical: 15,
+    marginHorizontal: 10,
+  },
+  ItemByCatHeading: {
+    marginLeft: 10,
+    fontSize: 25,
+    marginTop: 5,
+    color: 'black',
+    fontWeight: 'bold',
   },
   imageView: {
     flex: 0.35,
@@ -131,14 +190,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: 'center',
-  },
-  homeScreen: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  homeScreenText: {
-    fontSize: 70,
-    color: COLORS.black,
   },
   saveAddressButton: {
     color: '#fff',
