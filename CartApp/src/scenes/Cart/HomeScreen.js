@@ -198,7 +198,7 @@ class HomeScreen extends Component {
                       style={styles.itemImageByCat}
                       source={{uri: item.image_url}}
                     />
-                    <Text>{item.name}</Text>
+                    <Text style={styles.itemText}>{item.name}</Text>
                   </View>
                 )}
                 keyExtractor={courses => courses.id}
@@ -285,6 +285,9 @@ const styles = StyleSheet.create({
     width: 70,
     borderRadius: 50,
     alignSelf: 'center',
+  },
+  itemText: {
+    marginHorizontal: 10,
   },
 });
 
