@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 150,
-    width: 360,
+    width: 390,
   },
   itemContainer: {
     marginBottom: 10,

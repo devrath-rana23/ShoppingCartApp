@@ -1,4 +1,5 @@
 import {makeAutoObservable} from 'mobx';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Cartitems {
   cartItemsDummy = [
@@ -227,7 +228,7 @@ class Cartitems {
     ],
   ];
 
-  cartItemsDummy=[
+  cartItemsDummyReq = [
     {
       id: 2,
       name: "IndoPrimo Men's Regular Fit Casual Shirt",
@@ -251,8 +252,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/81qlnA0rJEL._UY445_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/81qlnA0rJEL._UY445_.jpg',
       category_id: 1,
       subcategory_id: 1,
       remember_token: null,
@@ -267,8 +267,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/81kJzDOwjNL._UY550_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/81kJzDOwjNL._UY550_.jpg',
       category_id: 1,
       subcategory_id: 1,
       remember_token: null,
@@ -283,8 +282,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/616xchp1ECL._UY741_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/616xchp1ECL._UY741_.jpg',
       category_id: 1,
       subcategory_id: 2,
       remember_token: null,
@@ -299,8 +297,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/81iVZ7r11NL._UX569_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/81iVZ7r11NL._UX569_.jpg',
       category_id: 1,
       subcategory_id: 2,
       remember_token: null,
@@ -315,8 +312,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/611hFiiUv4L._UX679_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/611hFiiUv4L._UX679_.jpg',
       category_id: 1,
       subcategory_id: 2,
       remember_token: null,
@@ -331,8 +327,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/81wv+QSad1S._UY741_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/81wv+QSad1S._UY741_.jpg',
       category_id: 2,
       subcategory_id: 3,
       remember_token: null,
@@ -347,8 +342,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/714H361NfrL._UY741_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/714H361NfrL._UY741_.jpg',
       category_id: 2,
       subcategory_id: 3,
       remember_token: null,
@@ -363,8 +357,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/61jyXYmRhkL._UY741_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/61jyXYmRhkL._UY741_.jpg',
       category_id: 2,
       subcategory_id: 3,
       remember_token: null,
@@ -379,8 +372,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/81DoqxAEKSL._UX569_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/81DoqxAEKSL._UX569_.jpg',
       category_id: 2,
       subcategory_id: 4,
       remember_token: null,
@@ -395,8 +387,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/71Y3uXjMGBL._UX569_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/71Y3uXjMGBL._UX569_.jpg',
       category_id: 2,
       subcategory_id: 4,
       remember_token: null,
@@ -411,8 +402,7 @@ class Cartitems {
       count: 0,
       added: 0,
       is_wishlist: 0,
-      image_url:
-        'https://m.media-amazon.com/images/I/61x-sq7vJjL._UY741_.jpg',
+      image_url: 'https://m.media-amazon.com/images/I/61x-sq7vJjL._UY741_.jpg',
       category_id: 2,
       subcategory_id: 4,
       remember_token: null,
@@ -479,10 +469,32 @@ class Cartitems {
     this.cartItems = data;
   };
 
-  getItems = () => {
-    data = this.cartItemsDummy[1];
-    this.setItems(data);
+  setAsyncItems = () => {
+    asyncGetData()
+      .then(reqData => this.setReqItems(reqData))
+      .catch(e => console.log(e));
+
+    asyncGetWishlistCount()
+      .then(reqData => this.setReqWishlistCount(reqData))
+      .catch(e => console.log(e));
+
+    asyncGetCartCount()
+      .then(reqData => this.setReqCartCount(reqData))
+      .catch(e => console.log(e));
   };
+
+  setReqItems = data => {
+    data != null ? (this.cartItemsDummy = data) : '';
+  };
+
+  setReqWishlistCount = data => {
+    data != null ? (this.wishlistCount = data) : '';
+  };
+
+  setReqCartCount = data => {
+    data != null ? (this.cartCount = data) : '';
+  };
+
   getCategoryCourses = (category, subcategory) => {
     try {
       let array = [];
@@ -665,6 +677,9 @@ class Cartitems {
       is_wishlist = is_wishlist == 0 ? 1 : 0;
     }
 
+    setAsyncWishlistCount(this.wishlistCount);
+    setAsyncCartCount(this.cartCount);
+
     this.cartItemsDummy[1] = this.cartItemsDummy[1].map(item => {
       return item.id == id
         ? {
@@ -683,6 +698,8 @@ class Cartitems {
           }
         : item;
     });
+
+    asyncStoreData(this.cartItemsDummy);
 
     data = this.cartItems.map(cartItem => {
       return cartItem.id == id
@@ -705,5 +722,47 @@ class Cartitems {
     this.setItems(data);
   };
 }
+
+const asyncStoreData = async data => {
+  try {
+    const jsonValue = JSON.stringify(data);
+    await AsyncStorage.setItem('@ItemsReq', jsonValue);
+  } catch (e) {}
+};
+
+const setAsyncWishlistCount = async data => {
+  try {
+    const jsonValue = JSON.stringify(data);
+    await AsyncStorage.setItem('@WishlistCount', jsonValue);
+  } catch (e) {}
+};
+
+const setAsyncCartCount = async data => {
+  try {
+    const jsonValue = JSON.stringify(data);
+    await AsyncStorage.setItem('@CartCount', jsonValue);
+  } catch (e) {}
+};
+
+const asyncGetData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('@ItemsReq');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {}
+};
+
+const asyncGetCartCount = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('@CartCount');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {}
+};
+
+const asyncGetWishlistCount = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('@WishlistCount');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {}
+};
 
 export default Cartitems;
